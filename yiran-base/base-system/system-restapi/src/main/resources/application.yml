@@ -10,8 +10,8 @@ spring:
   profiles: develop
 
   redis:
-    host: 192.168.40.161
-    port: 30379
+    host: 127.0.0.1
+    port: 6379
 #    cluster:
 #      nodes:
 #        - 192.168.40.161:30379
