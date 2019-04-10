@@ -10,17 +10,12 @@ spring:
   profiles: develop
 
   redis:
-<<<<<<< .merge_file_a05820
-    host: 127.0.0.1
-    port: 6379
-=======
     redisson: false
-    host: 114.67.224.99
-    port: 6379
+#    host: 114.67.224.99
+#    port: 6379
 #  redis:
-#    host: 192.168.40.161
-#    port: 30379
->>>>>>> .merge_file_a01292
+    host: 192.168.40.161
+    port: 30379
 #    cluster:
 #      nodes:
 #        - 192.168.40.161:30379
@@ -60,7 +55,7 @@ eureka:
 security:
   oauth2:
     authorization:
-      matchers: /user/names/**, /role/list, /actuator/**, /swagger-ui.html, /webjars/**, /swagger-resources/**, /v2/api-docs, /static/**
+      matchers: /swagger-ui.html, /webjars/**, /swagger-resources/**, /v2/api-docs, /static/**
     client:
       scope: webclient
       clientId: eagleeye
