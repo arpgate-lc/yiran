@@ -1,5 +1,7 @@
 package com.yiran.base.authorization.config;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import com.yiran.base.authorization.builder.RedisClientDetailsServiceBuilder;
+import com.yiran.base.authorization.token.RedisAuthenticationCodeServices;
 
 @Configuration
 @EnableAuthorizationServer
@@ -35,6 +39,9 @@ public class AuthorizationSecurityConfigurer extends AuthorizationServerConfigur
 
 	@Autowired(required = false)
 	private RedisClientDetailsServiceBuilder redisClientDetailsServiceBuilder;
+
+	@Autowired(required = false)
+	private RedisAuthenticationCodeServices redisAuthenticationCodeServices;
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -61,8 +68,10 @@ public class AuthorizationSecurityConfigurer extends AuthorizationServerConfigur
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		// TODO Auto-generated method stub
-		endpoints.tokenStore(tokenStore).accessTokenConverter(jwtAccessTokenConverter)
-				.authenticationManager(authenticationManager);
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();	
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new YiranTokenEnhancer(), jwtAccessTokenConverter));
+		endpoints.tokenStore(tokenStore).tokenEnhancer(tokenEnhancerChain).authenticationManager(authenticationManager)
+				.authorizationCodeServices(redisAuthenticationCodeServices);
 	}
 
 }
