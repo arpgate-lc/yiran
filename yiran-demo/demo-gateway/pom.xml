@@ -7,7 +7,7 @@
 
 	<parent>
 		<groupId>com.yiran</groupId>
-		<artifactId>yiran-demo</artifactId>
+		<artifactId>yiran-base</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
